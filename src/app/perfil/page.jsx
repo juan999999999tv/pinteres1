@@ -30,10 +30,10 @@ export default function Page() {
                 {usuario ?
                     (
                         <div className="mx-auto flex flex-col gap-5 w-fit text-center">
-                            <Image className="rounded-full" src={usuario.photoURL} width={200} height={200} alt="null"/>
+                            <Image className="rounded-full" src={usuario.photoURL} width={200} height={200} alt="imagen del usuario"/>
                             <h2>{usuario.displayName}</h2>
                             <input onChange={(e) => setInput(e.target.value)} type="text" className="border px-3 py-2 border-gray-500" placeholder="Ingresa la url de imagen que quieras agregar" />
-                            <button onClick={agregarImagen} className="bg-red-600 py-2 rounded-xl text-black font-bold">
+                            <button onClick={agregarImagen} className="bg-red-600 py-2 rounded-xl text-white font-bold">
                                 Agregar imagen
                             </button>
                         </div>
