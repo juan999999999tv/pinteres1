@@ -1,89 +1,65 @@
-"use client";
+'use client'
 import { auth } from "@/firebase/config";
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import useToast from "@/hooks/useToast";
 import { useUserStore } from "@/store/userStore";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState } from "react"
 
 export default function Formulario2() {
-  // Estado para email y contraseña
-  const [email, setEmail] = useState("");
-  const [contraseña, setContraseña] = useState("");
 
-  // Funciones del store y los toasts
-  const { loginUser } = useUserStore();
-  const { exito, errorToast } = useToast();
-  const router = useRouter();
+    const [email, setEmail] = useState(null);
+    const [contraseña, setContraseña] = useState(null);
 
-  // Iniciar sesión con email y contraseña
-  const loginUser2 = async () => {
-    if (!email || !contraseña) {
-      errorToast("Por favor, completa todos los campos.");
-      return;
+    const { loginUser } = useUserStore()
+
+    const { exito, errorToast } = useToast()
+
+    const router = useRouter()
+
+    const loginUser2 = async () => {
+        try {
+            const respuesta = await signInWithEmailAndPassword(auth, email, contraseña)
+            console.log(respuesta)
+            loginUser(respuesta.user)
+            exito("Iniciaste sesion exitosamente")
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    try {
-      const respuesta = await signInWithEmailAndPassword(auth, email, contraseña);
-      loginUser(respuesta.user);
-      exito("¡Iniciaste sesión exitosamente!");
-      router.push("/perfil"); // Redirige al perfil después de iniciar sesión
-    } catch (error) {
-      errorToast("Error al iniciar sesión. Verifica tus credenciales.");
-      console.error("Error de inicio de sesión:", error);
+    const provider = new GoogleAuthProvider();
+
+    const iniciarConGoogle = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await signInWithPopup(auth, provider)
+            console.log(response)
+            loginUser(response.user)
+            exito("Iniciaste sesion exitosamente")
+            router.push('/perfil')
+        } catch (error) {
+            console.log(error)
+        }
     }
-  };
 
-  // Iniciar sesión con Google
-  const provider = new GoogleAuthProvider();
-  const iniciarConGoogle = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await signInWithPopup(auth, provider);
-      loginUser(response.user);
-      exito("¡Iniciaste sesión con Google!");
-      router.push("/perfil");
-    } catch (error) {
-      errorToast("Error al iniciar sesión con Google.");
-      console.error("Error con Google:", error);
+    const handleClick = (e) => {
+        e.preventDefault();
+        loginUser2()
     }
-  };
 
-  return (
-    <form className="flex flex-col mx-[30%] gap-6 p-6 border rounded-lg shadow-md">
-      <h2 className="text-lg font-bold text-center">Iniciar Sesión</h2>
+    return (
+        <form className="flex flex-col mx-[30%] gap-6 p-6 border rounded-lg shadow-md">
+          
+             <h2 className="text-lg font-bold text-center">Iniciar sesion</h2> 
 
-      <input
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        className="border border-gray-400 px-3 py-2 rounded-lg"
-        placeholder="Ingresa tu email"
-        type="email"
-      />
+            <input onChange={(e) => setEmail(e.target.value)} className="border border-gray-400 px-3 py-2 rounded-lg" placeholder="Ingresa tu email" type="email" />
 
-      <input
-        onChange={(e) => setContraseña(e.target.value)}
-        value={contraseña}
-        className="border border-gray-400 px-3 py-2 rounded-lg"
-        placeholder="Ingresa tu contraseña"
-        type="password"
-      />
+            <input onChange={(e) => setContraseña(e.target.value)} className="border border-gray-400 px-3 py-2 rounded-lg" placeholder="Ingresa tu contraseña" type="password" />
 
-      <button
-        type="button"
-        onClick={loginUser2}
-        className="bg-red-600 py-2 rounded-2xl font-bold text-white hover:bg-red-700 transition"
-      >
-        Iniciar sesión
-      </button>
+            <button onClick={handleClick} className="bg-red-500 py-2 rounded-2xl font-bold text-white">Iniciar sesion</button>
 
-      <button
-        type="button"
-        onClick={iniciarConGoogle}
-        className="bg-blue-500 py-2 rounded-2xl font-bold text-white hover:bg-blue-600 transition"
-      >
-        Iniciar sesión con Google
-      </button>
-    </form>
-  );
+            <button onClick={iniciarConGoogle} className="bg-blue-500 py-2 rounded-2xl font-bold text-white hover:bg-blue-600 transition">Iniciar con google</button>
+        </form>
+    )
 }
