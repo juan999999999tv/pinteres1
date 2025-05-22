@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import { auth } from "@/firebase/config";
 import useToast from "@/hooks/useToast";
 import { useUserStore } from "@/store/userStore";
@@ -8,7 +8,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState } from "react"
 
 export default function Formulario2() {
   const [email, setEmail] = useState("");
@@ -36,7 +36,6 @@ export default function Formulario2() {
       console.log(error);
       errorToast("Error al iniciar sesión. Revisa tus credenciales.");
     }
-  };
 
   const iniciarConGoogle = async (e) => {
     e.preventDefault();
@@ -49,7 +48,6 @@ export default function Formulario2() {
       console.log(error);
       errorToast("Error al iniciar con Google.");
     }
-  };
 
   return (
     <form className="flex flex-col mx-[30%] gap-6 p-6 border rounded-lg shadow-md">
