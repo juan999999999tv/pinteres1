@@ -36,6 +36,7 @@ export default function Formulario2() {
       console.log(error);
       errorToast("Error al iniciar sesión. Revisa tus credenciales.");
     }
+  };
 
   const iniciarConGoogle = async (e) => {
     e.preventDefault();
@@ -48,6 +49,7 @@ export default function Formulario2() {
       console.log(error);
       errorToast("Error al iniciar con Google.");
     }
+  };
 
   return (
     <form className="flex flex-col mx-[30%] gap-6 p-6 border rounded-lg shadow-md">
