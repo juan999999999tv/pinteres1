@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/firebase/config";
+import { auth } from "@/firebase/config"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 
@@ -37,7 +37,7 @@ export default function Formulario() {
 
       <button
         onClick={handleClick}
-        className="bg-red-600 py-2 rounded-2xl font-bold text-white">
+        className="bg-red-600 py-2 rounded-2xl font-bold text-black">
         Registrame
       </button>
     </form>

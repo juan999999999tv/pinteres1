@@ -1,17 +1,23 @@
+// Import the functions you need from the SDKs you need 
 import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth'
+import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth"; 
 import { getFirestore } from "firebase/firestore";
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDO2AfOinVjhwI5kWdf_xE4ulnfN_wboxE",
-    authDomain: "pinterest-72f3b.firebaseapp.com",
-    projectId: "pinterest-72f3b",
-    storageBucket: "pinterest-72f3b.firebasestorage.app",
-    messagingSenderId: "21908411423",
-    appId: "1:21908411423:web:b4fbe45fb639e6286af12a"
+  apiKey: "AIzaSyBat_dVAbXBEPjjGqg6CGSB_ripKReEr_4",
+  authDomain: "pinteres1-abbd8.firebaseapp.com",
+  projectId: "pinteres1-abbd8",
+  storageBucket: "pinteres1-abbd8.firebasestorage.app",
+  messagingSenderId: "914173352438",
+  appId: "1:914173352438:web:2fd08d9c08ef75c0a24fd7",
+  measurementId: "G-E6EV89V3DC"
 };
 
-
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app)
+const analytics = getAnalytics(app);
+
+export const auth = getAuth(app);
 export const db = getFirestore(app);

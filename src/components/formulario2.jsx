@@ -1,70 +1,72 @@
 "use client";
 import { auth } from "@/firebase/config";
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import useToast from "@/hooks/useToast";
 import { useUserStore } from "@/store/userStore";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Formulario2() {
-  // Estado para email y contraseña
   const [email, setEmail] = useState("");
   const [contraseña, setContraseña] = useState("");
 
-  // Funciones del store y los toasts
   const { loginUser } = useUserStore();
   const { exito, errorToast } = useToast();
   const router = useRouter();
 
-  // Iniciar sesión con email y contraseña
   const loginUser2 = async () => {
     if (!email || !contraseña) {
-      errorToast("Por favor, completa todos los campos.");
-      return;
+      return errorToast("Por favor completa todos los campos.");
     }
 
     try {
-      const respuesta = await signInWithEmailAndPassword(auth, email, contraseña);
+      const respuesta = await signInWithEmailAndPassword(
+        auth,
+        email,
+        contraseña
+      );
       loginUser(respuesta.user);
-      exito("¡Iniciaste sesión exitosamente!");
-      router.push("/perfil"); // Redirige al perfil después de iniciar sesión
+      exito("Iniciaste sesión exitosamente");
+      router.push("/perfil");
     } catch (error) {
-      errorToast("Error al iniciar sesión. Verifica tus credenciales.");
-      console.error("Error de inicio de sesión:", error);
+      console.log(error);
+      errorToast("Error al iniciar sesión. Revisa tus credenciales.");
     }
   };
 
-  // Iniciar sesión con Google
-  const provider = new GoogleAuthProvider();
   const iniciarConGoogle = async (e) => {
     e.preventDefault();
     try {
-      const response = await signInWithPopup(auth, provider);
+      const response = await signInWithPopup(auth, new GoogleAuthProvider());
       loginUser(response.user);
-      exito("¡Iniciaste sesión con Google!");
+      exito("Iniciaste sesión exitosamente");
       router.push("/perfil");
     } catch (error) {
-      errorToast("Error al iniciar sesión con Google.");
-      console.error("Error con Google:", error);
+      console.log(error);
+      errorToast("Error al iniciar con Google.");
     }
   };
 
   return (
     <form className="flex flex-col mx-[30%] gap-6 p-6 border rounded-lg shadow-md">
-      <h2 className="text-lg font-bold text-center">Iniciar Sesión</h2>
+      <h2 className="text-lg font-bold text-center">Iniciar sesión</h2>
 
       <input
-        onChange={(e) => setEmail(e.target.value)}
         value={email}
-        className="border border-gray-400 px-3 py-2 rounded-lg"
+        onChange={(e) => setEmail(e.target.value)}
+        className="border border-gray-400 px-3 py-2 rounded-lg text-black"
         placeholder="Ingresa tu email"
         type="email"
       />
 
       <input
-        onChange={(e) => setContraseña(e.target.value)}
         value={contraseña}
-        className="border border-gray-400 px-3 py-2 rounded-lg"
+        onChange={(e) => setContraseña(e.target.value)}
+        className="border border-gray-400 px-3 py-2 rounded-lg text-black"
         placeholder="Ingresa tu contraseña"
         type="password"
       />
@@ -72,7 +74,7 @@ export default function Formulario2() {
       <button
         type="button"
         onClick={loginUser2}
-        className="bg-red-600 py-2 rounded-2xl font-bold text-white hover:bg-red-700 transition"
+        className="bg-red-500 py-2 rounded-2xl font-bold text-black"
       >
         Iniciar sesión
       </button>
@@ -80,9 +82,9 @@ export default function Formulario2() {
       <button
         type="button"
         onClick={iniciarConGoogle}
-        className="bg-blue-500 py-2 rounded-2xl font-bold text-white hover:bg-blue-600 transition"
+        className="bg-blue-500 py-2 rounded-2xl font-bold text-black hover:bg-blue-600 transition"
       >
-        Iniciar sesión con Google
+        Iniciar con Google
       </button>
     </form>
   );
